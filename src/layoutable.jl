@@ -1,6 +1,6 @@
-mutable struct LTeX <: MakieLayout.LObject
+mutable struct LTeX <: AbstractPlotting.MakieLayout.LObject
     parent::Scene
-    layoutobservables::MakieLayout.LayoutObservables
+    layoutobservables::AbstractPlotting.MakieLayout.LayoutObservables
     plot::TeXImg
     attributes::Attributes
 end
@@ -12,6 +12,8 @@ function default_attributes(::Type{LTeX}, scene)
         padding = (0f0, 0f0, 0f0, 0f0),
         height = Auto(),
         width = Auto(),
+        tellheight = false,
+        tellwidth = false,
         alignmode = Inside(),
         valign = :center,
         halign = :left,
@@ -27,7 +29,7 @@ function LTeX(parent::Scene; bbox = nothing, kwargs...)
 
     @extract attrs (tex, visible, padding, halign, valign)
 
-    layoutobservables = LayoutObservables(LTeX, attrs.width, attrs.height, halign, valign, attrs.alignmode; suggestedbbox = bbox)
+    layoutobservables = LayoutObservables{LTeX}(attrs.width, attrs.height, attrs.tellwidth, attrs.tellheight, halign, valign, attrs.alignmode; suggestedbbox = bbox)
 
     textpos = Node(Point2f0(0, 0))
 
